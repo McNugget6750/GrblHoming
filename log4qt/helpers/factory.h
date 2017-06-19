@@ -30,6 +30,7 @@
  * Dependencies
  ******************************************************************************/
 
+#include <QObject>
 #include <QtCore/QHash>
 #include <QtCore/QMutex>
 #include <QtCore/QStringList>

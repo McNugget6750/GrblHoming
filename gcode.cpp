@@ -136,9 +136,9 @@ void GCode::goToHome()
     gotoXYZFourth(QString("G0 z").append(zpos));
 
     if (numaxis == MAX_AXIS_COUNT)
-        gotoXYZFourth(QString("G1 x0 y0 z0 ").append(QString(controlParams.fourthAxisType)).append("0"));
+        gotoXYZFourth(QString("G0 x0 y0 z0 ").append(QString(controlParams.fourthAxisType)).append("0"));
 	else
-        gotoXYZFourth("G1 x0 y0 z0");
+        gotoXYZFourth("G0 x0 y0 Z0");
 
     maxZ -= maxZOver;
 

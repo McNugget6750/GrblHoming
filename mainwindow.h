@@ -137,6 +137,14 @@ private slots:
     void portIsClosed(bool reopen);
     void adjustedAxis();
 
+    // Timo's buttons
+
+    // TIMO: PCB control buttons
+    void homeXY();
+    void resetHomeXY();
+    void setBottomCoordinateSystem();
+    void probeZ();
+
     //check boxes
     void toggleSpindle();
     void toggleRestoreAbsolute();
