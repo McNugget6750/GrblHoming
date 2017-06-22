@@ -672,17 +672,17 @@ void MainWindow::decZ()
 void MainWindow::homeXY()
 {
     // Set coordinate system to relative for raising Z since we don't know where we are at the moment
-    QString line = QString("G91").append("\r");
-    emit gotoXYZFourth(line);
+    //QString line = QString("G91").append("\r");
+    //emit gotoXYZFourth(line);
 
-    line = QString("G0 Z").append(ui->txtZRaiseBeforeHoming->text()).append("\r");
-    emit gotoXYZFourth(line);
+    //line = QString("G0 Z").append(ui->txtZRaiseBeforeHoming->text()).append("\r");
+    //emit gotoXYZFourth(line);
 
     // And immediately switch back to abolute positioning
-    line = QString("G90").append("\r");
-    emit gotoXYZFourth(line);
+    //line = QString("G90").append("\r");
+    //emit gotoXYZFourth(line);
 
-    line = QString("$H").append("\r");
+    QString line = QString("$H").append("\r");
     emit gotoXYZFourth(line);
 }
 
@@ -703,6 +703,9 @@ void MainWindow::setBottomCoordinateSystem()
     QString line = QString("G92 X").append(ui->txtBottomLayerXOffset->text())
             .append(" Y").append(ui->txtBottomLayerYOffset->text()).append("\r");
 
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 X0").append("\r");
     emit gotoXYZFourth(line);
 }
 
