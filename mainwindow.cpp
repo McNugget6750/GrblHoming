@@ -43,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     readSettings();
+    settingsLoadPCBMillSettings();
 
     info("%s has started", GRBL_CONTROLLER_NAME_AND_VERSION);
 
@@ -104,12 +105,27 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->verticalSliderZJog,SIGNAL(sliderReleased()),this,SLOT(zJogSliderReleased()));
     connect(ui->pushButtonRefreshPos,SIGNAL(clicked()),this,SLOT(refreshPosition()));
     connect(ui->comboStep,SIGNAL(currentIndexChanged(QString)),this,SLOT(comboStepChanged(QString)));
-
-    // TIMO: PCB control buttons
+    
+    // TIMO: PCB Mill Control buttons
     connect(ui->btnHomeXY, SIGNAL(clicked()), this, SLOT(homeXY()));
     connect(ui->btnSetCurrentPositionAsNewHomeXY, SIGNAL(clicked()), this, SLOT(resetHomeXY()));
     connect(ui->btnSetBottomSideCoordinateSystem, SIGNAL(clicked()), this, SLOT(setBottomCoordinateSystem()));
     connect(ui->btnProbeZ, SIGNAL(clicked()), this, SLOT(probeZ()));
+
+    // TIMO: Alignment Fence Calibration Buttons
+    connect(ui->btnFenceHomeXY, SIGNAL(clicked()), this, SLOT(homeXY()));
+    connect(ui->btnFenceZeroZ, SIGNAL(clicked()), this, SLOT(resetZ()));
+    connect(ui->btnFenceStartMilling, SIGNAL(clicked()), this, SLOT(startMillingAlignmentFence()));
+
+    // TIMO: Bottom Side Calibration Buttons
+    connect(ui->btnBottomSideHomeXY, SIGNAL(clicked()), this, SLOT(homeXY()));
+    connect(ui->btnBottomSideZeroZ, SIGNAL(clicked()), this, SLOT(resetZ()));
+    connect(ui->btnBottomSideDrillHoles, SIGNAL(clicked()), this, SLOT(startDrillingCalibrationHoles()));
+    connect(ui->btnBottomSideMoveToHoles, SIGNAL(clicked()), this, SLOT(moveToCalibrationHoles()));
+    connect(ui->btnBottomSideMinusX, SIGNAL(clicked()), this, SLOT(adjustCalibrationXAxisPositive()));
+    connect(ui->btnBottomSidePlusX, SIGNAL(clicked()), this, SLOT(adjustCalibrationXAxisNegative()));
+    connect(ui->btnBottomSideCalibrationDone, SIGNAL(clicked()), this, SLOT(bottomCalibrationDone()));
+
 
     connect(this, SIGNAL(sendFile(QString)), &gcode, SLOT(sendFile(QString)));
     connect(this, SIGNAL(openPort(QString,QString)), &gcode, SLOT(openPort(QString,QString)));
@@ -290,6 +306,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    settingsSavePCBMillSettings();
     delete ui;
 }
 
@@ -731,6 +748,168 @@ void MainWindow::probeZ()
     ui->ckbProbeWiresConnected->setChecked(false);
 }
 
+void MainWindow::resetZ()
+{
+    QString line = QString("G92 Z0").append("\r");
+    emit gotoXYZFourth(line);
+}
+
+void MainWindow::startMillingAlignmentFence()
+{
+    //(Metric Mode)
+    QString line = QString("G21").append("\r");
+    emit gotoXYZFourth(line);
+
+    //(Absolute Coordinates)
+    line = QString("G90").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 Z5").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G1 X0 Y0 Z0 F1000").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("M3").append("\r");
+    emit gotoXYZFourth(line);
+
+    for (float i = 0; i > -5.5; i -= 0.5)
+    {
+        line = QString("G1 Z").append(QString::number(i)).append(" F144").append("\r");
+        emit gotoXYZFourth(line);
+        line = QString("G1 X162 F360").append("\r");
+        emit gotoXYZFourth(line);
+        line = QString("G0 Z1").append("\r");
+        emit gotoXYZFourth(line);
+        line = QString("G1 X0 F1000").append("\r");
+        emit gotoXYZFourth(line);
+    }
+
+    line = QString("M4").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 X0 Y0 Z5 F1000").append("\r");
+    emit gotoXYZFourth(line);
+
+    receiveListOut("Done milling the X-Axis Alignment Fence!");
+    // Done
+}
+
+void MainWindow::startDrillingCalibrationHoles()
+{
+    // Set current Z-Position to 0 so that we can safely move the axis around.
+    // We assume the user followed the instructions and successfully moved the drill bit just right onto the PCB.
+    // Also, we deliberately DON'T use Z-height probing. Advanced users will do that anyways using the toold on the milling tab.
+    resetZ();
+
+    QString line = QString("G0 Z5").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 X5 Y5").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("M3").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 Z0").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G1 Z-1.8 F144").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G1 Z0 F144").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("M4").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 Z5").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 X0 Y0").append("\r");
+    emit gotoXYZFourth(line);
+
+    // Stay up 5mm because we can't move the pcb otherwise.
+}
+
+void MainWindow::moveToCalibrationHoles()
+{
+    // Since we don't know where the machine is at the moment - the user might have adjusted it manually quite a bit - we have to do a homing first.
+    //QString line = QString("$H").append("\r");
+    //emit gotoXYZFourth(line);
+
+    QString line = QString("G92 X").append(ui->txtBottomLayerXOffset->text())
+            .append(" Y").append(ui->txtBottomLayerYOffset->text()).append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 Z5").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 X-5 Y5").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 Z0").append("\r");
+    emit gotoXYZFourth(line);
+}
+
+void MainWindow::adjustCalibrationXAxisPositive()
+{
+    float x_offset = ui->txtBottomLayerXOffset->text().toFloat();
+
+    QString line = QString("G91").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 X0.1").append("\r");
+    emit gotoXYZFourth(line);
+
+    x_offset += 0.1f;
+
+    line = QString("G90").append("\r");
+    emit gotoXYZFourth(line);
+
+    ui->txtBottomLayerXOffset->setText(QString::number(x_offset));
+}
+
+void MainWindow::adjustCalibrationXAxisNegative()
+{
+    float x_offset = ui->txtBottomLayerXOffset->text().toFloat();
+
+    QString line = QString("G91").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 X-0.1").append("\r");
+    emit gotoXYZFourth(line);
+
+    x_offset -= 0.1f;
+
+    line = QString("G90").append("\r");
+    emit gotoXYZFourth(line);
+
+    ui->txtBottomLayerXOffset->setText(QString::number(x_offset));
+}
+
+void MainWindow::bottomCalibrationDone()
+{
+    QString line = QString("G0 Z5").append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 X0 Y0").append("\r");
+    emit gotoXYZFourth(line);
+
+    float x_offset = ui->txtBottomLayerXOffset->text().toFloat();
+    x_offset *= -1.0f; // invert offset
+
+    line = QString("G92 X").append(QString::number(x_offset))
+            .append(" Y").append(ui->txtBottomLayerYOffset->text()).append("\r");
+    emit gotoXYZFourth(line);
+
+    line = QString("G0 X0 Y0").append("\r");
+    emit gotoXYZFourth(line);
+
+    receiveListOut("Congratulations! Your mill is now calibrated and you can start working with it.");
+}
+
+
 void MainWindow::decFourth()
 {
 /// LETARTARE 25-04-2014
@@ -1094,6 +1273,30 @@ void MainWindow::setSettings()
 
     // update gcode thread with latest values
     emit setResponseWait(controlParams);
+}
+
+void MainWindow::settingsSavePCBMillSettings()
+{
+    QSettings settings;
+
+    settings.setValue(SETTINGS_PCB_RISE_BEFORE_HOME, ui->txtZRaiseBeforeHoming->text().toFloat());
+    settings.setValue(SETTINGS_PCB_Z_PROBING_DEPTH, ui->txtZProbingDepth->text().toFloat());
+    settings.setValue(SETTINGS_PCB_Z_PROBING_FEEDRATE, ui->txtZProbingFeedrate->text().toFloat());
+    settings.setValue(SETTINGS_PCB_BOTTOM_LAYER_X_OFFSET, ui->txtBottomLayerXOffset->text().toFloat());
+    settings.setValue(SETTINGS_PCB_BOTTOM_LAYER_Y_OFFSET, ui->txtBottomLayerYOffset->text().toFloat());
+
+    receiveListOut("Saved new PCB Milling settings.");
+}
+
+void MainWindow::settingsLoadPCBMillSettings()
+{
+    QSettings settings;
+
+    ui->txtZRaiseBeforeHoming->setText(QString::number(settings.value(SETTINGS_PCB_RISE_BEFORE_HOME, 5.0f).value<float>()));
+    ui->txtZProbingDepth->setText(QString::number(settings.value(SETTINGS_PCB_Z_PROBING_DEPTH, -35.0f).value<float>()));
+    ui->txtZProbingFeedrate->setText(QString::number(settings.value(SETTINGS_PCB_Z_PROBING_FEEDRATE, 20.0f).value<float>()));
+    ui->txtBottomLayerXOffset->setText(QString::number(settings.value(SETTINGS_PCB_BOTTOM_LAYER_X_OFFSET, -160.3f).value<float>()));
+    ui->txtBottomLayerYOffset->setText(QString::number(settings.value(SETTINGS_PCB_BOTTOM_LAYER_Y_OFFSET, 0.0f).value<float>()));
 }
 
 void MainWindow::updateSettingsFromOptionDlg(QSettings& settings)

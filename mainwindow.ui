@@ -1169,7 +1169,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>3</number>
         </property>
         <property name="tabBarAutoHide">
          <bool>false</bool>
@@ -2176,6 +2176,454 @@
          <zorder>line_2</zorder>
          <zorder>line_3</zorder>
          <zorder>label_13</zorder>
+        </widget>
+        <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>Alignment Fence Calibration</string>
+         </attribute>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="geometry">
+           <rect>
+            <x>9</x>
+            <y>9</y>
+            <width>501</width>
+            <height>531</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Calibration Step 1: Y-Axis Fence Milling and Calibration</string>
+          </property>
+          <widget class="QPushButton" name="btnFenceHomeXY">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>62</y>
+             <width>75</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Home X and Y</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_14">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>30</y>
+             <width>471</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>After assembly of the machine, the fence at the top of the bed needs to be milled down to provide an alignment fence that is absolutely parallel to the X-Axis!</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_15">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>70</y>
+             <width>111</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 1: Home X and Y:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_16">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>100</y>
+             <width>471</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 2: Insert a cylindrical mill bit of at least the length of the fence height plus 1 mm.</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_17">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>120</y>
+             <width>471</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 3: Move Z-axis manually onto the top surface of the alignment fence.</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_18">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>160</y>
+             <width>101</width>
+             <height>10</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 4: Zero Z-Axis:</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btnFenceZeroZ">
+           <property name="geometry">
+            <rect>
+             <x>120</x>
+             <y>150</y>
+             <width>75</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Zero Z-Axis</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_19">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>190</y>
+             <width>471</width>
+             <height>40</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 5: Move Y-Axis manually such that it barely touches the alignment fence. Warning: If the alignment fence is not parallel to the X-axis at all, please be cautious not to mill off too much material in one go. It might break your mill bit! Repeat from this step 5 if necessary!</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_20">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>250</y>
+             <width>321</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 6: Mill the alignment fence to be truly parallel to the X-axis.</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btnFenceStartMilling">
+           <property name="geometry">
+            <rect>
+             <x>340</x>
+             <y>240</y>
+             <width>151</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Start Milling Alignm. Fence</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_21">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>270</y>
+             <width>471</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 7: Remove all dust with a vacuum, clean the bed, home the machine. DONE!</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_4">
+         <attribute name="title">
+          <string>Bottom Side Calibration</string>
+         </attribute>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>501</width>
+            <height>531</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Calibration Step 2: X-Axis Calibration for Milling Double Sided Printed Circuit Boards</string>
+          </property>
+          <widget class="QLabel" name="label_22">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>30</y>
+             <width>471</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>AFTER Calibration Step 1 has been completed: Add a PCB or similar material to the mill bed using double sided tape. Align the PCB to the alignment fence AND the top left corner of the mill bed. This needs to be precise!</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_23">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>90</y>
+             <width>111</width>
+             <height>10</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 1: Home X and Y:</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btnBottomSideHomeXY">
+           <property name="geometry">
+            <rect>
+             <x>130</x>
+             <y>80</y>
+             <width>75</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Home X and Y</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_24">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>120</y>
+             <width>471</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 2: Insert a drill bit and manually move the mill onto the surface of the PCB such that it almost DOESN'T touch it. Let it touch the PCB ever so slightly!</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btnBottomSideZeroZ">
+           <property name="geometry">
+            <rect>
+             <x>120</x>
+             <y>160</y>
+             <width>81</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Zero Z-Axis</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_25">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>170</y>
+             <width>101</width>
+             <height>10</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 4: Zero Z-Axis:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_26">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>210</y>
+             <width>321</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 5: Drill calibration holes into the PCB automatically:</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btnBottomSideDrillHoles">
+           <property name="geometry">
+            <rect>
+             <x>340</x>
+             <y>200</y>
+             <width>151</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Start Drilling Top Side Holes</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_27">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>250</y>
+             <width>471</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 6: Remove PCB and glue it upside down into the bed. Align the PCB to the alignment fence AND the top right corner of the mill bed. This needs to be precise!</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btnBottomSideMoveToHoles">
+           <property name="geometry">
+            <rect>
+             <x>350</x>
+             <y>290</y>
+             <width>141</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Move to Bottom Side Holes</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_28">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>300</y>
+             <width>331</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 7: Move to calibration holes on bottom of the PCB:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_29">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>330</y>
+             <width>471</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 8: Check if drill bit position is precisely over the holes that were drilled on the top side of the PCB. If not, use buttons below for alignment!</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btnBottomSidePlusX">
+           <property name="geometry">
+            <rect>
+             <x>250</x>
+             <y>370</y>
+             <width>81</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>X-Axis + 0.1</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btnBottomSideMinusX">
+           <property name="geometry">
+            <rect>
+             <x>160</x>
+             <y>370</y>
+             <width>81</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>X-Axis - 0.1</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_30">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>410</y>
+             <width>471</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Step 9: If hole and drill bit lines up perfectly you are done. Return to the PCB Milling Control tab and start your project! The calibration value is stored in the &quot;X-Offset for bottom layer:&quot; field.</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_31">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>490</y>
+             <width>471</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Please note: Close this program properly since values will be stored on exit and loaded at start up.</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btnBottomSideCalibrationDone">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>450</y>
+             <width>461</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Go back to safety - you're done calibrating</string>
+           </property>
+          </widget>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">

@@ -41,6 +41,14 @@
 
 #define MAX_STATUS_LINES_WHEN_ACTIVE        200
 
+// PCB Mill Settings
+
+#define SETTINGS_PCB_RISE_BEFORE_HOME       "riseBeforeHome"
+#define SETTINGS_PCB_Z_PROBING_DEPTH        "zProbingDepth"
+#define SETTINGS_PCB_Z_PROBING_FEEDRATE     "zProbingFeedrate"
+#define SETTINGS_PCB_BOTTOM_LAYER_X_OFFSET  "BottomLayerXOffset"
+#define SETTINGS_PCB_BOTTOM_LAYER_Y_OFFSET  "BottomLayerYOffset"
+
 /* testing optimizing scrollbar, doesn't work right
 class MyItemDelegate : public QItemDelegate
 {
@@ -144,6 +152,13 @@ private slots:
     void resetHomeXY();
     void setBottomCoordinateSystem();
     void probeZ();
+    void resetZ();
+    void startMillingAlignmentFence();
+    void startDrillingCalibrationHoles();
+    void moveToCalibrationHoles();
+    void adjustCalibrationXAxisPositive();
+    void adjustCalibrationXAxisNegative();
+    void bottomCalibrationDone();
 
     //check boxes
     void toggleSpindle();
@@ -257,6 +272,11 @@ private:
     bool processGCode(QString inputLine, double& x, double& y, double& i, double& j, bool& arc, bool& cw, bool& mm, int& g);
     double decodeLineItem(const QString& item, const int next, bool& valid, int& nextIsValue);
     double decodeDouble(QString value, bool& valid);
+
+
+    // PCB Settings functions
+    void settingsSavePCBMillSettings();
+    void settingsLoadPCBMillSettings();
 };
 
 
